@@ -26,7 +26,8 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 		//create employee object
 		List<Employee> listOfAllEmployees = new ArrayList<Employee>();
 		//sql query
-		String query = "SELECT * FROM employee";
+		String query = "SELECT employee_id, department_id, first_name, last_name, birth_date, gender, hire_date " +
+					    "FROM employee ";
 		//sqlrowset
 		SqlRowSet results = jdbcTemplate.queryForRowSet(query);
 		//while(results)
@@ -43,7 +44,9 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 		List<Employee> employeesByName = new ArrayList<Employee>();
 		
 		//query
-		String query = "SELECT * FROM employee WHERE first_name = ? AND last_name = ?";
+		String query = "SELECT employee_id, department_id, first_name, last_name, birth_date, gender, hire_date " +
+						"FROM employee " + 
+						"WHERE first_name = ? AND last_name = ?";
 		//execute query
 		SqlRowSet results = this.jdbcTemplate.queryForRowSet(query, firstNameSearch, lastNameSearch);
 		//while loop
@@ -61,7 +64,9 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 		
 		List<Employee> employeesByDepartment = new ArrayList<Employee>();
 		
-		String query = "SELECT * FROM employee WHERE department_id = ?";
+		String query = "SELECT employee_id, department_id, first_name, last_name, birth_date, gender, hire_date " +
+					    "FROM employee " +
+					    "WHERE department_id = ?";
 		
 		SqlRowSet results = this.jdbcTemplate.queryForRowSet(query, id);
 		
@@ -76,7 +81,9 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 	@Override
 	public List<Employee> getEmployeesWithoutProjects() {
 		List<Employee> employeesWithoutProjects = new ArrayList<Employee>();
-		String query ="SELECT * FROM project_employee WHERE project_id IS NULL";
+		String query ="SELECT project_id, employee_id "+
+					  "FROM project_employee " +
+					  "WHERE project_id IS NULL";
 		
 		SqlRowSet results = this.jdbcTemplate.queryForRowSet(query);
 		
@@ -89,12 +96,24 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 
 	@Override
 	public List<Employee> getEmployeesByProjectId(Long projectId) {
-		return new ArrayList<>();
+		List<Employee> employeesByProjectId = new ArrayList<Employee>();
+		String query = "SELECT project_id, employee_id " +
+					   "FROM project_employee " +
+					   "WHERE project_id = ?";
+		SqlRowSet results = this.jdbcTemplate.queryForRowSet(query, projectId);
+		while(results.next()) {
+			Employee employee = mapRowToEmployee(results);
+			employeesByProjectId.add(employee);
+		}
+		return employeesByProjectId;
 	}
 
 	@Override
 	public void changeEmployeeDepartment(Long employeeId, Long departmentId) {
-		
+		String query = "UPDATE INTO employee " +
+					    "SET department_id = ? " +
+						"WHERE employee_id = ?";
+		this.jdbcTemplate.update(query, departmentId, employeeId);
 	}
 	
 	private Employee mapRowToEmployee(SqlRowSet results) {
