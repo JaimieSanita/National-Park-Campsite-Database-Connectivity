@@ -99,3 +99,16 @@ ALTER TABLE project_employee ADD FOREIGN KEY (employee_id) REFERENCES employee(e
 SELECT * FROM employee;
 SELECT * FROM project_employee;
 SELECT * FROM project_employee WHERE project_id IS NULL;
+SELECT * FROM department;
+SELECT * FROM project;
+
+SELECT project_id, name, from_date, to_date
+FROM project
+WHERE from_date IS NOT NULL AND to_date IS NULL;
+
+
+--Update a department to the datastore. Only called on departments that
+--	 * are already in the datastore.
+--	 * 
+
+UPDATE department SET name = ? WHERE department_id IS NOT NULL;
