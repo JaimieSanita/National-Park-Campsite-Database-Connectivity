@@ -1,7 +1,7 @@
 --CREATE DATABASE projects;
 
 
-
+START TRANSACTION;
 
 CREATE SEQUENCE seq_employee_id;
 
@@ -112,3 +112,4 @@ WHERE from_date IS NOT NULL AND to_date IS NULL;
 --	 * 
 
 UPDATE department SET name = ? WHERE department_id IS NOT NULL;
+ROLLBACK;

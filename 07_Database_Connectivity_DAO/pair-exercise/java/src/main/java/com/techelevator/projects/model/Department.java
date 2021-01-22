@@ -5,6 +5,7 @@ public class Department {
 	private Long id;
 	private String name;
 
+	
 	public String getName() {
 		return name;
 	}
