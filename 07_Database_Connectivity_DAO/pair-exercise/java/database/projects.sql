@@ -106,9 +106,11 @@ SELECT project_id, name, from_date, to_date
 FROM project
 WHERE from_date IS NOT NULL AND to_date IS NULL;
 
+SELECT project_id, employee_id FROM project_employee WHERE project_id = 6;
+
 
 --Update a department to the datastore. Only called on departments that
 --	 * are already in the datastore.
 --	 * 
-
+SELECT department_id, name FROM department WHERE department_id = 2;
 UPDATE department SET name = ? WHERE department_id IS NOT NULL;

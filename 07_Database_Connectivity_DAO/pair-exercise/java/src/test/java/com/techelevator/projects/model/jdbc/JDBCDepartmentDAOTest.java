@@ -23,10 +23,9 @@ import com.techelevator.projects.model.Department;
 
 public class JDBCDepartmentDAOTest {
 
-
 	private static SingleConnectionDataSource dataSource;
 
-	//CONSTANTS
+	// CONSTANTS
 	private static final Long DEPARTMENT_ID = (long) 123456789;
 	private static final Long DEPARTMENT_ID2 = (long) 123456788;
 	private static final String DEPARTMENT_NAME = "Dummy Department";
@@ -50,8 +49,8 @@ public class JDBCDepartmentDAOTest {
 
 	@Before
 	public void setup() {
-		
-		//DELETE ALL TABLES clean database
+
+		// DELETE ALL TABLES clean database
 		String sqlDeleteAllTables = "DELETE FROM project_employee;" + "DELETE FROM employee;"
 				+ "DELETE FROM department;" + "DELETE FROM project;";
 		// INSERT a fake department into the deparment table
@@ -59,16 +58,16 @@ public class JDBCDepartmentDAOTest {
 
 		// Construct our template object
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		
-		//delete all tables
+
+		// delete all tables
 		jdbcTemplate.update(sqlDeleteAllTables);
-		
+
 		// insert department1
-		jdbcTemplate.update(sqlInsertDepartment, DEPARTMENT_ID, DEPARTMENT_NAME); // <- notice we pass in the country
-		//insert department2																			// code constant as a
+		jdbcTemplate.update(sqlInsertDepartment, DEPARTMENT_ID, DEPARTMENT_NAME); 
+		// insert department2 
 		jdbcTemplate.update(sqlInsertDepartment, DEPARTMENT_ID2, DEPARTMENT_NAME2);
 
-		// setup my dao field, so that my tests have a valid DAO to work with
+		// setup dao field, tests have a valid DAO to work with
 		this.dao = new JDBCDepartmentDAO(dataSource);
 	}
 
@@ -78,17 +77,15 @@ public class JDBCDepartmentDAOTest {
 	}
 
 	@Test
-	public void all_departments_are_fetched() {
+	public void returns_all_departments() {
 		// ARRANGE(delete all tables, dummy departments)
 
 		// ACT
 		List<Department> actual = this.dao.getAllDepartments();
 		// ASSERT
-		Assert.assertNotNull("The list should not be empty.", 
-							 actual);
-		Assert.assertEquals("All departments should be selected.",
-							2,
-							actual.size()); // should get back 2 department from list
+		Assert.assertNotNull("The list should not be empty.", actual);
+		Assert.assertEquals("All departments should be selected.", 2, actual.size()); // should get back 2 department
+																						// from list
 	}
 
 	@Test
@@ -100,22 +97,20 @@ public class JDBCDepartmentDAOTest {
 		expectedDepartment.setName(DEPARTMENT_NAME);
 
 		Assert.assertNotNull("The list should not be empty.", actual);
-		Assert.assertEquals("The department name should match.", 
-							DEPARTMENT_NAME,
-							actual.get(0).getName());
+		Assert.assertEquals("The department name should match.", DEPARTMENT_NAME, actual.get(0).getName());
 		Department savedDepartment = actual.get(0);
 		assertDepartmentsAreEqual(expectedDepartment, savedDepartment);
 	}
-	
+
 	@Test
 	public void returns_department_by_id() {
-		
+
 		Department department = new Department();
 		department.setId(DEPARTMENT_ID);
 		department.setName(DEPARTMENT_NAME);
-		
+
 		Department actual = dao.getDepartmentById(DEPARTMENT_ID);
-		
+
 		assertNotNull(actual);
 		assertDepartmentsAreEqual(department, actual);
 	}
@@ -134,19 +129,17 @@ public class JDBCDepartmentDAOTest {
 
 		assertDepartmentsAreEqual(updatedDepartment, actual);
 	}
-	
+
 	@Test
 	public void creates_department() {
 		String newName = "New Department Name";
 		Department createDepartment = new Department();
 		createDepartment.setName(newName);
-		
+
 		dao.createDepartment(createDepartment);
 		Department savedDepartment = dao.getDepartmentById(createDepartment.getId());
-		
-		assertNotEquals("The id should not be null.", 
-						null, 
-						createDepartment.getId());
+
+		assertNotEquals("The id should not be null.", null, createDepartment.getId());
 		assertDepartmentsAreEqual(createDepartment, savedDepartment);
 	}
 

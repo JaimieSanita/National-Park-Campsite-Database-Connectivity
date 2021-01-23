@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import com.techelevator.projects.model.Department;
 import com.techelevator.projects.model.Employee;
 import com.techelevator.projects.model.EmployeeDAO;
 
@@ -81,9 +82,10 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 	@Override
 	public List<Employee> getEmployeesWithoutProjects() {
 		List<Employee> employeesWithoutProjects = new ArrayList<Employee>();
-		String query ="SELECT project_id, employee_id "+
-					  "FROM project_employee " +
-					  "WHERE project_id IS NULL";
+		String query ="SELECT * " + 
+				"FROM employee AS e " + 
+				"JOIN project_employee AS pe ON e.employee_id = pe.employee_id " + 
+				"WHERE pe.project_id IS NULL";
 		
 		SqlRowSet results = this.jdbcTemplate.queryForRowSet(query);
 		
@@ -97,16 +99,19 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 	@Override
 	public List<Employee> getEmployeesByProjectId(Long projectId) {
 		List<Employee> employeesByProjectId = new ArrayList<Employee>();
-		String query = "SELECT project_id, employee_id " +
-					   "FROM project_employee " +
-					   "WHERE project_id = ?";
+		String query = "SELECT * " + 
+				"FROM employee AS e " + 
+				"JOIN project_employee AS pe ON e.employee_id = pe.employee_id " + 
+				"WHERE pe.project_id = ?";
 		SqlRowSet results = this.jdbcTemplate.queryForRowSet(query, projectId);
+		
 		while(results.next()) {
 			Employee employee = mapRowToEmployee(results);
 			employeesByProjectId.add(employee);
 		}
 		return employeesByProjectId;
 	}
+
 
 	@Override
 	public void changeEmployeeDepartment(Long employeeId, Long departmentId) {
@@ -135,5 +140,7 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 		
 		return employee;
 	}
+	
+
 
 }
