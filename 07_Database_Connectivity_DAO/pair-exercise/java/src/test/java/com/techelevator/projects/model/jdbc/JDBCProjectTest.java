@@ -1,13 +1,8 @@
 package com.techelevator.projects.model.jdbc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -16,8 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -102,7 +95,6 @@ public class JDBCProjectTest {
 		jdbcTemplate.update(sqlInsertProject, PROJECT_ID, PROJECT_NAME, PROJECT_FROM_DATE, PROJECT_TO_DATE);
 		// insert project2
 		jdbcTemplate.update(sqlInsertProject, PROJECT_ID2, PROJECT_NAME2, PROJECT_FROM_DATE2, PROJECT_TO_DATE2);
-		
 
 		// insert employee1
 		jdbcTemplate.update(sqlInsertEmployee, EMPLOYEE_ID, EMPLOYEE_FIRST_NAME, EMPLOYEE_LAST_NAME, EMPLOYEE_BIRTHDATE,

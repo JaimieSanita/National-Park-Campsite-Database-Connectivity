@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -14,8 +13,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -63,8 +60,8 @@ public class JDBCDepartmentDAOTest {
 		jdbcTemplate.update(sqlDeleteAllTables);
 
 		// insert department1
-		jdbcTemplate.update(sqlInsertDepartment, DEPARTMENT_ID, DEPARTMENT_NAME); 
-		// insert department2 
+		jdbcTemplate.update(sqlInsertDepartment, DEPARTMENT_ID, DEPARTMENT_NAME);
+		// insert department2
 		jdbcTemplate.update(sqlInsertDepartment, DEPARTMENT_ID2, DEPARTMENT_NAME2);
 
 		// setup dao field, tests have a valid DAO to work with
